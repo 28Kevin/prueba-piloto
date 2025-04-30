@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ProductStoreRequest extends FormRequest
+class ProductBuyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,9 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'id' => 'nullable|exists:products,id',
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
+            'product_id' => 'required|numeric|exists:products,id',
             'quantity' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0',
         ];
     }
 
@@ -40,13 +40,14 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'id.exists' => 'El ID proporcionado no existe en la base de datos',
-            'name.required' => 'El nombre es obligatorio',
-            'name.string' => 'El nombre debe ser una cadena de texto',
-            'name.max' => 'El nombre no debe exceder los 255 caracteres',
-            'price.required' => 'El precio es obligatorio',
-            'price.numeric' => 'El precio debe ser un número',
-            'price.min' => 'El precio no puede ser negativo',
-            'quantity.min' => 'La cantidad no puede ser negativa',
+            'product_id.required' => 'El Producto es obligatorio',
+            'product_id.number' => 'El Producto debe ser una cadena de texto',
+            'total.required' => 'El Total es obligatorio',
+            'total.numeric' => 'El Total debe ser un número',
+            'total.min' => 'El Total no puede ser negativo',
+            'quantity.required' => 'La cantidad es obligatorio',
+            'quantity.numeric' => 'La cantidad debe ser un número',
+            'quantity.min' => 'La cantidad no puede ser negativo',
         ];
     }
 

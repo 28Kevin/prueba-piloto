@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 $routes = [
     'routes/Products/products.php',
+    'routes/Inventory/inventory.php',
 ];
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -19,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             foreach ($routes as $route) {
                 Route::prefix('api')
                     ->middleware('api')
-                    ->middleware('auth:api') // 🔥 aquí cambiamos
+                    // ->middleware('auth:api') // 🔥 aquí cambiamos
                     ->group(base_path($route));
             }
 

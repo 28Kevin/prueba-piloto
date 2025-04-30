@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Product;
+namespace App\Http\Requests\Inventory;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ProductStoreRequest extends FormRequest
+class InventoryStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class ProductStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'nullable|exists:products,id',
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
+            'id' => 'nullable|exists:inventories,id',
+            'product_id' => 'required|exists:products,id',
             'quantity' => 'required|numeric|min:0',
         ];
     }
@@ -40,13 +39,11 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'id.exists' => 'El ID proporcionado no existe en la base de datos',
-            'name.required' => 'El nombre es obligatorio',
-            'name.string' => 'El nombre debe ser una cadena de texto',
-            'name.max' => 'El nombre no debe exceder los 255 caracteres',
-            'price.required' => 'El precio es obligatorio',
-            'price.numeric' => 'El precio debe ser un número',
-            'price.min' => 'El precio no puede ser negativo',
-            'quantity.min' => 'La cantidad no puede ser negativa',
+            'product_id.required' => 'El Producto es obligatorio',
+            'product_id.exists' => 'El ID proporcionado del producto no existe en la base de datos',
+            'quantity.required' => 'El precio es obligatorio',
+            'quantity.numeric' => 'El precio debe ser un número',
+            'quantity.min' => 'El precio no puede ser negativo',
         ];
     }
 
