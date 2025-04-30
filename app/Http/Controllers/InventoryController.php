@@ -16,6 +16,34 @@ class InventoryController extends Controller
         $this->inventoryRepository = $inventoryRepository;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1-inventory-store",
+     *     summary="Crear un nuevo registro de inventario",
+     *     tags={"Inventario"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"product_id", "quantity"},
+     *             @OA\Property(property="product_id", type="integer", example=1),
+     *             @OA\Property(property="quantity", type="integer", example=50)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Inventario creado exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Errores de validación"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor"
+     *     )
+     * )
+     */
+
     public function store(InventoryStoreRequest $request)
     {
         try {
@@ -47,6 +75,32 @@ class InventoryController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/v1-inventory-delete/{id}",
+     *     summary="Eliminar un registro de inventario",
+     *     tags={"Inventario"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID del inventario",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Inventario eliminado exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Inventario no encontrado"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor"
+     *     )
+     * )
+     */
     public function delete($id)
     {
         try {
@@ -78,6 +132,32 @@ class InventoryController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/v1-inventory-by-product/{productId}",
+     *     summary="Obtener inventario por ID de producto",
+     *     tags={"Inventario"},
+     *     @OA\Parameter(
+     *         name="productId",
+     *         in="path",
+     *         description="ID del producto",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Inventario encontrado exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Inventario no encontrado"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor"
+     *     )
+     * )
+     */
     public function getByProduct($id)
     {
         try {
@@ -99,7 +179,7 @@ class InventoryController extends Controller
             return response()->json([
                 'errors' => [[
                     'status' => '500',
-                    'title' => 'Error al eliminar el producto',
+                    'title' => 'Error al obtener el producto',
                     'detail' => $th->getMessage(),
                     'meta' => [
                         'line' => $th->getLine(),
@@ -109,5 +189,4 @@ class InventoryController extends Controller
             ], 500);
         }
     }
-
 }

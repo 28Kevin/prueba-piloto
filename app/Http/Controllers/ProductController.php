@@ -11,6 +11,8 @@ use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Resources\Product\ProductFormResource;
 use Illuminate\Http\Request;
 
+use OpenApi\Annotations as OA;
+
 class ProductController extends Controller
 {
     private ProductRepository $productRepository;
@@ -24,6 +26,24 @@ class ProductController extends Controller
         $this->saleRepository = $saleRepository;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1-product-store",
+     *     summary="Crear un nuevo producto",
+     *     tags={"Productos"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "price", "quantity"},
+     *             @OA\Property(property="name", type="string", example="Keyboard"),
+     *             @OA\Property(property="price", type="number", format="float", example=49.99),
+     *             @OA\Property(property="quantity", type="integer", example=10)
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Producto creado exitosamente"),
+     *     @OA\Response(response=422, description="Errores de validación")
+     * )
+     */
     public function store(ProductStoreRequest $request)
     {
         try {
@@ -64,6 +84,21 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/v1-product-info/{id}",
+     *     summary="Obtener información de un producto",
+     *     tags={"Productos"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Información del producto"),
+     *     @OA\Response(response=404, description="Producto no encontrado")
+     * )
+     */
     public function info($id)
     {
         try {
@@ -102,6 +137,21 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/v1-product-delete/{id}",
+     *     summary="Eliminar un producto",
+     *     tags={"Productos"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Producto eliminado"),
+     *     @OA\Response(response=404, description="Producto no encontrado")
+     * )
+     */
     public function delete($id)
     {
         try {
@@ -133,6 +183,21 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1-product-list",
+     *     summary="Listar productos (paginado, filtrado, etc.)",
+     *     tags={"Productos"},
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="page", type="integer", example=1),
+     *             @OA\Property(property="per_page", type="integer", example=10)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Listado de productos")
+     * )
+     */
     public function list(Request $request)
     {
         try {
@@ -171,6 +236,24 @@ class ProductController extends Controller
         }
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/v1-buy-product",
+     *     summary="Comprar un producto (actualiza el inventario)",
+     *     tags={"Productos"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"product_id", "quantity", "total"},
+     *             @OA\Property(property="product_id", type="integer", example=1),
+     *             @OA\Property(property="quantity", type="integer", example=3),
+     *             @OA\Property(property="total", type="number", format="float", example=149.97)
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Compra realizada exitosamente"),
+     *     @OA\Response(response=422, description="Errores de validación")
+     * )
+     */
     public function buy(ProductBuyRequest $request)
     {
         try {
@@ -205,5 +288,4 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
 }
