@@ -16,6 +16,12 @@ Este es un sistema desarrollado con Laravel 12 que implementa una arquitectura m
 ```bash
 git clone https://github.com/28Kevin/prueba-piloto.git
 cd prueba-piloto
+
+(opcional)
+Descargar ultimos cambios de la rama main
+
+(opcional)
+Las pruebas de funcionamiento y construccion desde el sistema se hizo mediante postman
 ```
 
 2. Instalar dependencias PHP:
